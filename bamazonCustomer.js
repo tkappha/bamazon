@@ -32,6 +32,7 @@ connection.connect(function(err) {
 	// all queries must run in connect function
 	showAllProducts();
 
+
 });
 
 function showAllProducts() {
@@ -40,6 +41,42 @@ function showAllProducts() {
 			console.log(res[i].item_id + " | " + res[i].product_name + " | $" + res[i].price);
 		}
 		console.log("----------------------------------------------------------");
+		orderProducts();
 	});
 }
 
+function orderProducts() {
+	inquirer
+		.prompt([
+			{
+				name: "itemID",
+				type: "input",
+				message: "What is the ID of the product you would like to buy?"
+			},
+			{
+				name: "quantity",
+				type: "input",
+				message: "What is the quantity you would like to buy?"
+			}
+		])
+}
+
+
+
+// function updateProduct() {
+// 	console.log("Updating products database");
+// 	connection.query(
+// 		"UPDATE products SET ? WHERE ?", 
+// 		[
+// 			{
+// 				quantity: //quantity customer ordered
+// 			},
+// 			{
+// 				item_id: //id of product customer ordered
+// 			}
+// 		],
+// 		function(err, res) {
+// 			console.log(res.affectedRows + " product updated!\n");
+// 		}
+// 	);
+// }
