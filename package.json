@@ -1,0 +1,23 @@
+{
+  "name": "bamazon_package",
+  "version": "1.0.0",
+  "description": "CLI application that utilizes Node.js and an SQL database to store product information and interact with that information",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tkappha/bamazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tkappha/bamazon/issues"
+  },
+  "homepage": "https://github.com/tkappha/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^3.2.0",
+    "mysql": "^2.13.0"
+  }
+}
