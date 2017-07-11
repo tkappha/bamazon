@@ -6,7 +6,7 @@
 *Includes ids, names and prices*
 ![All items in database](/displayAllItems.png)
 
-### User is then prompted with a message asking them the ID of the product they would like to buy, and the number of units of each product they would like to buy###
+### User is then prompted with a message asking them the ID of the product they would like to buy, and the number of units of each product they would like to buy ###
 ![Message prompts for customer order](/customerOrder.png)
 
 ### Once user has placed their order, application checks to see if store has enough product to meet customer's request ###
