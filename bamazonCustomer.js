@@ -59,9 +59,20 @@ function orderProducts() {
 				message: "What is the quantity you would like to buy?"
 			}
 		])
+		//checks inventory to see if there is enough product to fulfill customer request
+		checkQuantity();
+
 }
 
-
+function checkQuantity() {
+	//if quantity ordered > inventory
+	console.log("Sorry, we do not have enough " + productOrdered + " in stock to fulfill your order.");
+	showAllProducts();
+	//else fill order by giving customer cost of their purchase
+	console.log("Thank you for your order of " + quantity + " " + productOrdered + ".  Your total is: $" + orderCost);
+	updateProduct();
+	showAllProducts();
+}
 
 // function updateProduct() {
 // 	console.log("Updating products database");
