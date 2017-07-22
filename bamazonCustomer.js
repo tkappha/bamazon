@@ -15,10 +15,10 @@
 
 //***********************************************************************************
 
-var mysql = require('mysql'); 
-var inquirer = require('inquirer');
+const mysql = require('mysql'); 
+const inquirer = require('inquirer');
 
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
 	host: 'localhost',
 	port: 3306,
 	user: 'root',
@@ -29,7 +29,6 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
 	if (err) throw err;
 	//console.log("connected as id " + connection.threadId + "\n");
-	// all queries must run in connect function
 	showAllProducts();
 
 
@@ -59,19 +58,32 @@ function orderProducts() {
 				message: "What is the quantity you would like to buy?"
 			}
 		])
+		.then(function(answer){	
+		//console.log(answer) example: {itemID: '1', quantity '3'}
+		var quantity = parseInt(answer.quantity);
+		var itemId = parseInt(answer.itemID);
 		//checks inventory to see if there is enough product to fulfill customer request
-		checkQuantity();
-
+		checkQuantity(quantity, itemId);
+		})
 }
 
-function checkQuantity() {
+function checkQuantity(quantity, itemId) {
+
+	var query = "SELECT stock_quantity FROM products WHERE ?";
+	connection.query(query, {item_id: itemId}, function(err, res, quantitydb) {
+		if (err) throw err; 
+		//console.log(res);  [RowDataPacket { stock_quantity: 200}]
+		var ret = JSON.stringify(quantitydb);
+		console.log(quantitydb);
+		
+	})
 	//if quantity ordered > inventory
-	console.log("Sorry, we do not have enough " + productOrdered + " in stock to fulfill your order.");
-	showAllProducts();
-	//else fill order by giving customer cost of their purchase
-	console.log("Thank you for your order of " + quantity + " " + productOrdered + ".  Your total is: $" + orderCost);
-	updateProduct();
-	showAllProducts();
+	// if ()
+	// console.log("Sorry, we do not have enough " + productOrdered + " in stock to fulfill your order.");
+	// showAllProducts();
+	// //else fill order by giving customer cost of their purchase
+	// console.log("Thank you for your order of " + quantity + " " + productOrdered + ".  Your total is: $" + orderCost);
+	// updateProduct();
 }
 
 // function updateProduct() {
@@ -80,7 +92,7 @@ function checkQuantity() {
 // 		"UPDATE products SET ? WHERE ?", 
 // 		[
 // 			{
-// 				quantity: //quantity customer ordered
+// 				stock_quantity: //stock_quantity - quantity customer ordered
 // 			},
 // 			{
 // 				item_id: //id of product customer ordered
@@ -88,6 +100,7 @@ function checkQuantity() {
 // 		],
 // 		function(err, res) {
 // 			console.log(res.affectedRows + " product updated!\n");
+			//showAllProducts();
 // 		}
 // 	);
 // }
