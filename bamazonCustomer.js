@@ -60,31 +60,33 @@ function orderProducts() {
 		])
 		.then(function(answer){	
 		//console.log(answer) example: {itemID: '1', quantity '3'}
-		var quantity = parseInt(answer.quantity);
-		var itemId = parseInt(answer.itemID);
+		var quantity = Number(answer.quantity);
+		var itemId = Number(answer.itemID);
 		//checks inventory to see if there is enough product to fulfill customer request
 		checkQuantity(quantity, itemId);
+
 		})
-}
+
 
 function checkQuantity(quantity, itemId) {
 
-	var query = "SELECT stock_quantity FROM products WHERE ?";
-	connection.query(query, {item_id: itemId}, function(err, res, quantitydb) {
+	var query = "SELECT stock_quantity, price FROM products WHERE ?";
+	connection.query(query, {item_id: itemId}, function(err, res) {
 		if (err) throw err; 
-		//console.log(res);  [RowDataPacket { stock_quantity: 200}]
-		var ret = JSON.stringify(quantitydb);
-		console.log(quantitydb);
+		// console.log(res[0].stock_quantity);
+		if(res[0].stock_quantity < quantity){
+			console.log("Sorry, there is not enough product in stock to fill your order");
+			orderProducts();
+		}
+		else{
+			//console.log(res[0].price);
+			updateProduct(quantity);
+			var price = res[0].price;
+			console.log("Your total cost is: $" + (price * quantity));
+		}
+
 		
-	})
-	//if quantity ordered > inventory
-	// if ()
-	// console.log("Sorry, we do not have enough " + productOrdered + " in stock to fulfill your order.");
-	// showAllProducts();
-	// //else fill order by giving customer cost of their purchase
-	// console.log("Thank you for your order of " + quantity + " " + productOrdered + ".  Your total is: $" + orderCost);
-	// updateProduct();
-}
+	});
 
 // function updateProduct() {
 // 	console.log("Updating products database");
@@ -100,7 +102,7 @@ function checkQuantity(quantity, itemId) {
 // 		],
 // 		function(err, res) {
 // 			console.log(res.affectedRows + " product updated!\n");
-			//showAllProducts();
+// 			showAllProducts();
 // 		}
 // 	);
 // }
